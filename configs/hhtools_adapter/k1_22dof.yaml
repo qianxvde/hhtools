@@ -1,0 +1,59 @@
+# hhtools CSV -> mjlab NPZ adapter for the Booster K1 (22 DoF) retarget preset.
+#
+# K1 has 22 actuated joints (2 head + 4 left arm + 4 right arm + 6 left leg +
+# 6 right leg). Unlike T1 it has no Waist joint, and its shoulder-pitch joints
+# are named `ALeft_Shoulder_Pitch` / `ARight_Shoulder_Pitch` (the `A` prefix is
+# part of the K1 MJCF joint name, not an hhtools artifact).
+#
+# booster_mjlab's `convert_amp_motion.py` maps K1 to itself (source order =
+# output order = K1_DOF_ORDER, all 22 joints), so this adapter does the same:
+# we keep all 22 joints and emit a `k1_motion_v1` NPZ. If you only want the
+# 20 body joints (drop head), switch `output_format` to `k1_body20_motion_v1`
+# and edit `output_joint_order`.
+
+source_robot: k1_22dof
+
+source_joint_order: auto
+
+output_format: k1_motion_v1
+
+output_joint_order:
+  - AAHead_yaw
+  - Head_pitch
+  - ALeft_Shoulder_Pitch
+  - Left_Shoulder_Roll
+  - Left_Elbow_Pitch
+  - Left_Elbow_Yaw
+  - ARight_Shoulder_Pitch
+  - Right_Shoulder_Roll
+  - Right_Elbow_Pitch
+  - Right_Elbow_Yaw
+  - Left_Hip_Pitch
+  - Left_Hip_Roll
+  - Left_Hip_Yaw
+  - Left_Knee_Pitch
+  - Left_Ankle_Pitch
+  - Left_Ankle_Roll
+  - Right_Hip_Pitch
+  - Right_Hip_Roll
+  - Right_Hip_Yaw
+  - Right_Knee_Pitch
+  - Right_Ankle_Pitch
+  - Right_Ankle_Roll
+
+# See t1_23dof.yaml for the sign/offset semantics.
+sign:
+  Left_Hip_Roll: 1.0
+  Right_Hip_Roll: 1.0
+  Left_Ankle_Roll: 1.0
+  Right_Ankle_Roll: 1.0
+
+offset: {}
+
+root_quat_input_order: xyzw
+root_quat_output_order: xyzw
+root_axis_flip: null
+fps_override: null
+
+compute_body_states: true
+mjcf_path: src/assets/robots/booster_k1/k1.xml

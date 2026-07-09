@@ -1,0 +1,103 @@
+# hhtools CSV -> mjlab NPZ adapter for the Booster T1 (23 DoF) retarget preset.
+#
+# hhtools exports a generic robot trajectory CSV:
+#
+#   time, root_x, root_y, root_z, root_qx, root_qy, root_qz, root_qw,
+#   dof_<joint1>, dof_<joint2>, ...
+#
+# This file tells `scripts/convert_hhtools_csv_to_mjlab_npz.py` how to map that
+# CSV into the canonical `t1_body21_motion_v1` NPZ format consumed by
+# `booster_mjlab` AMP / motion-tracking tasks.
+#
+# The adapter is the ONLY place where joint-order / sign / offset / quaternion
+# order / root-frame conversions live. hhtools itself stays untouched; if a
+# replay looks wrong on the T1 MJCF, fix this YAML first.
+
+# Match this against the `# robot: <name>` line in the CSV header.
+source_robot: t1_23dof
+
+# CSV DOF order. `auto` = infer from CSV header (`dof_<name>` columns). If the
+# CSV header is missing or you want to override, list joint names explicitly in
+# CSV column order.
+source_joint_order: auto
+
+# Target NPZ format. `t1_body21_motion_v1` drops the two head joints
+# (AAHead_yaw, Head_pitch) and keeps the 21 body joints that every locomotion /
+# AMP / motion-tracking task uses. Use `t1_full23_motion_v1` if you need the
+# head joints (e.g. for a head-controller replay).
+output_format: t1_body21_motion_v1
+
+# Output joint order — must match the MJCF qpos order of the joints you keep.
+# Defaults to T1_BODY_DOF_ORDER when omitted; listed here for clarity so anyone
+# debugging a replay can see exactly which column is which.
+output_joint_order:
+  - Left_Shoulder_Pitch
+  - Left_Shoulder_Roll
+  - Left_Elbow_Pitch
+  - Left_Elbow_Yaw
+  - Right_Shoulder_Pitch
+  - Right_Shoulder_Roll
+  - Right_Elbow_Pitch
+  - Right_Elbow_Yaw
+  - Waist
+  - Left_Hip_Pitch
+  - Left_Hip_Roll
+  - Left_Hip_Yaw
+  - Left_Knee_Pitch
+  - Left_Ankle_Pitch
+  - Left_Ankle_Roll
+  - Right_Hip_Pitch
+  - Right_Hip_Roll
+  - Right_Hip_Yaw
+  - Right_Knee_Pitch
+  - Right_Ankle_Pitch
+  - Right_Ankle_Roll
+
+# Per-joint transform applied as `q_mj = sign[name] * q_csv + offset[name]`.
+# Defaults: sign = 1.0, offset = 0.0. Override only the joints you need to flip
+# or shift; missing names fall back to the defaults.
+#
+# Common reasons to flip a sign:
+#   * URDF retarget used `axis="0 1 0"` while the MJCF uses `axis="0 -1 0"`
+#     (or vice versa) for the same joint.
+#   * hhtools IK solved in a mirrored frame.
+#
+# Common reasons to add an offset:
+#   * The retarget's zero pose differs from the MJCF default pose (keyframe
+#     `home`). Convert the difference once and put it here.
+sign:
+  Left_Hip_Roll: 1.0
+  Right_Hip_Roll: 1.0
+  Left_Ankle_Roll: 1.0
+  Right_Ankle_Roll: 1.0
+
+offset: {}
+
+# Root pose conversion.
+#   * hhtools writes `root_qx, root_qy, root_qz, root_qw` (xyzw).
+#   * The body21_motion_v1 NPZ contract stores `root_quaternion` in xyzw.
+#   * MuJoCo free-joint qpos is wxyz — the FK step does that conversion
+#     internally, so the NPZ itself stays xyzw.
+root_quat_input_order: xyzw
+root_quat_output_order: xyzw
+
+# Optional root axis remap for incompatible source frames. `null` means no
+# remap (hhtools and MuJoCo are both z-up). If your CSV is y-up, set:
+#   root_axis_flip: { x: 1, y: 1, z: -1 }
+# and the adapter will rotate the root pose accordingly.
+root_axis_flip: null
+
+# Override the source fps. `null` = use the `# sample_rate: <Hz>` line from
+# the CSV header. Set this to resample-independent: the adapter currently does
+# NOT resample, it just relabels the fps.
+fps_override: null
+
+# When true, the adapter runs MuJoCo forward kinematics on the T1 MJCF and
+# stores per-body world poses (`body_pos_w`, `body_quat_w`, `body_names`) so
+# the AMP loader can build 195-D body-keypoint features without re-FK'ing.
+# Disable with `--no-body-states` if you only need joint/root data.
+compute_body_states: true
+
+# Path to the MJCF used for FK. Relative paths resolve against the
+# `booster_mjlab` repo root. The Trunk body is the free joint root.
+mjcf_path: src/assets/robots/booster_t1/t1.xml
