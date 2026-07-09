@@ -17,9 +17,6 @@ own training stack.
 - Kept the web and CLI workflow for motion preview, robot retargeting, and batch
   dataset inspection.
 
-Large generated docs, runtime caches, virtual environments, and private
-experiment outputs are intentionally not included in this public snapshot.
-
 ## Install
 
 ```bash
