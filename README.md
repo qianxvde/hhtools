@@ -1,11 +1,14 @@
-# hhtools
+# my_hhtools
 
 [中文说明](README_cn.md)
 
-This repository is a project-specific fork of the open-source tooling from
-[jaggerShen/human-humanoid-tools.git](https://github.com/jaggerShen/human-humanoid-tools.git).
-It keeps the core humanoid motion retargeting workflow and adds adapters for our
-own training stack.
+Personal open-source fork of
+[jaggerShen/human-humanoid-tools](https://github.com/jaggerShen/human-humanoid-tools).
+Repository: [github.com/qianxvde/my_hhtools](https://github.com/qianxvde/my_hhtools).
+
+It keeps the core humanoid motion retargeting workflow and adds adapters for the
+companion `my_mjlab` fall-recovery training stack. The Python CLI package name
+remains `hhtools` (`uv run hhtools web`, etc.).
 
 ## What Changed
 

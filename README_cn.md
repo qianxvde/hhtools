@@ -1,11 +1,14 @@
-# hhtools
+# my_hhtools
 
 [English README](README.md)
 
+个人开源仓库：[github.com/qianxvde/my_hhtools](https://github.com/qianxvde/my_hhtools)。
+
 本仓库是在开源工具
-[jaggerShen/human-humanoid-tools.git](https://github.com/jaggerShen/human-humanoid-tools.git)
+[jaggerShen/human-humanoid-tools](https://github.com/jaggerShen/human-humanoid-tools)
 基础上做的项目适配版。核心仍然是人类动作到人形机器人的重映射、预览和批处理流程，
-同时加入了适配我们训练框架所需的数据整理能力。
+同时加入了适配 `my_mjlab` 跌倒回复训练所需的数据整理能力。Python CLI 包名仍为
+`hhtools`（例如 `uv run hhtools web`）。
 
 ## 主要改动
 
