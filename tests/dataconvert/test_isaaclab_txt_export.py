@@ -1,4 +1,4 @@
-"""Tests for the booster_isaaclab AMP .txt exporter and profile registry."""
+"""Tests for the isaaclab_amp AMP .txt exporter and profile registry."""
 
 from __future__ import annotations
 
@@ -127,16 +127,16 @@ def test_joint_order_mismatch_raises(tmp_path: Path) -> None:
 def test_profiles_registry_contract() -> None:
     # Robot-agnostic: exactly two targets (framework/format), no T1/K1 split.
     ids = {p.id for p in _profiles.list_profiles()}
-    assert ids == {"booster_mjlab.body_npz", "booster_isaaclab.amp_txt"}
+    assert ids == {"my_mjlab.body_npz", "isaaclab_amp.amp_txt"}
     with pytest.raises(KeyError):
         _profiles.get_profile("nope")
 
-    txt = _profiles.get_profile("booster_isaaclab.amp_txt")
+    txt = _profiles.get_profile("isaaclab_amp.amp_txt")
     # joint order is derived from the robot at export time, so the profile
     # itself pins only the 4 AMP end-effectors and no joints.
     assert txt.joint_order == ()
     assert len(txt.end_effector_bodies) == 4
-    npz = _profiles.get_profile("booster_mjlab.body_npz")
+    npz = _profiles.get_profile("my_mjlab.body_npz")
     assert npz.joint_order == ()
     assert npz.anchor_body == "Trunk"
 
@@ -146,11 +146,11 @@ def test_export_with_profile_derives_joint_order_from_robot(tmp_path: Path) -> N
     src = _mini_source()
     # Registry profile has no joint_order; it must fall back to the robot's
     # actuated joints (j_lh, j_rh, j_lf, j_rf) => 2*4 + 3*4 = 20 obs dims.
-    profile = _profiles.get_profile("booster_isaaclab.amp_txt")
+    profile = _profiles.get_profile("isaaclab_amp.amp_txt")
     out = tmp_path / "mini.txt"
     summary = _profiles.export_with_profile(src, robot, profile, out)
 
     assert out.is_file()
     assert summary["observation_dim"] == 20
     assert summary["num_end_effectors"] == 4
-    assert summary["profile"] == "booster_isaaclab.amp_txt"
+    assert summary["profile"] == "isaaclab_amp.amp_txt"

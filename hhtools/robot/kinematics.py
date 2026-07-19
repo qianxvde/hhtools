@@ -110,7 +110,7 @@ def _side_of(lower: str) -> str:
     # PND / vendor camelCase: ``toeLeft``, ``shinRight``, ``shoulderPitchLeft``.
     if re.search(r"(?<=[a-z])(?:left|right)$", lower):
         return "right" if lower.endswith("right") else "left"
-    # Booster T1: AL* left arm, AR* right arm.
+    # T1 humanoid: AL* left arm, AR* right arm.
     if re.match(r"^al\d", lower):
         return "left"
     if re.match(r"^ar\d", lower):
@@ -547,7 +547,7 @@ def _resolve_hips_chest_duplicate(
 ) -> list[str]:
     """Split ``hips`` / ``chest`` when scaffold mapped both to the same link.
 
-    Inverted humanoids (e.g. Booster T1: floating ``Trunk`` + leg root
+    Inverted humanoids (e.g. T1 humanoid: floating ``Trunk`` + leg root
     ``Waist``) and pelvis-root rigs with a separate arm trunk (Ultron:
     ``base_link`` legs + ``trunk_link`` arms) need distinct pelvis vs upper-
     torso targets.  When both slots collide on one link, use the LCA of the
@@ -578,7 +578,7 @@ def _resolve_hips_chest_duplicate(
 def _drop_chest_duplicate_of_hips(ik_map: dict[str, str]) -> str | None:
     """Drop ``chest`` when it still shares ``hips``' link (single rigid trunk).
 
-    Mini humanoids (e.g. Booster K1) attach legs and arms to one ``Trunk``
+    Mini humanoids (e.g. K1 humanoid) attach legs and arms to one ``Trunk``
     link; a second chest IK target on that link over-constrains the solver.
     Keep ``hips`` for root / pelvis tracking.
     """

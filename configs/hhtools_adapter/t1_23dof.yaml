@@ -1,4 +1,4 @@
-# hhtools CSV -> mjlab NPZ adapter for the Booster T1 (23 DoF) retarget preset.
+# hhtools CSV -> mjlab NPZ adapter for the T1 humanoid (23 DoF) retarget preset.
 #
 # hhtools exports a generic robot trajectory CSV:
 #
@@ -7,7 +7,7 @@
 #
 # This file tells `scripts/convert_hhtools_csv_to_mjlab_npz.py` how to map that
 # CSV into the canonical `t1_body21_motion_v1` NPZ format consumed by
-# `booster_mjlab` AMP / motion-tracking tasks.
+# `my_mjlab` AMP / motion-tracking tasks.
 #
 # The adapter is the ONLY place where joint-order / sign / offset / quaternion
 # order / root-frame conversions live. hhtools itself stays untouched; if a
@@ -99,5 +99,5 @@ fps_override: null
 compute_body_states: true
 
 # Path to the MJCF used for FK. Relative paths resolve against the
-# `booster_mjlab` repo root. The Trunk body is the free joint root.
-mjcf_path: src/assets/robots/booster_t1/t1.xml
+# `my_mjlab` repo root. The Trunk body is the free joint root.
+mjcf_path: src/assets/robots/robot_t1/t1.xml

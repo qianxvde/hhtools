@@ -2,7 +2,7 @@
 
 This is the single-source replacement for the old
 ``scripts/convert_hhtools_csv_to_mjlab_npz.py`` (CSV -> NPZ + FK) plus the
-booster_mjlab ``add_body_states_to_npz.py`` / ``convert_t1_motion_to_body21.py``
+my_mjlab ``add_body_states_to_npz.py`` / ``convert_t1_motion_to_body21.py``
 scripts. The output contract matches mjlab AMP / motion tracking::
 
     format_version    scalar str

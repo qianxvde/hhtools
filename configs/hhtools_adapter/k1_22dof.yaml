@@ -1,11 +1,11 @@
-# hhtools CSV -> mjlab NPZ adapter for the Booster K1 (22 DoF) retarget preset.
+# hhtools CSV -> mjlab NPZ adapter for the K1 humanoid (22 DoF) retarget preset.
 #
 # K1 has 22 actuated joints (2 head + 4 left arm + 4 right arm + 6 left leg +
 # 6 right leg). Unlike T1 it has no Waist joint, and its shoulder-pitch joints
 # are named `ALeft_Shoulder_Pitch` / `ARight_Shoulder_Pitch` (the `A` prefix is
 # part of the K1 MJCF joint name, not an hhtools artifact).
 #
-# booster_mjlab's `convert_amp_motion.py` maps K1 to itself (source order =
+# my_mjlab's `convert_amp_motion.py` maps K1 to itself (source order =
 # output order = K1_DOF_ORDER, all 22 joints), so this adapter does the same:
 # we keep all 22 joints and emit a `k1_motion_v1` NPZ. If you only want the
 # 20 body joints (drop head), switch `output_format` to `k1_body20_motion_v1`
@@ -56,4 +56,4 @@ root_axis_flip: null
 fps_override: null
 
 compute_body_states: true
-mjcf_path: src/assets/robots/booster_k1/k1.xml
+mjcf_path: src/assets/robots/robot_k1/k1.xml

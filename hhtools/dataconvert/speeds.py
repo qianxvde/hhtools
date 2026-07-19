@@ -1,6 +1,6 @@
 """Root-velocity summary for a converted motion NPZ (robot-agnostic).
 
-Ported from booster_mjlab's ``evaluate_t1_motion_speeds.py`` but without the
+Ported from my_mjlab's ``evaluate_t1_motion_speeds.py`` but without the
 T1-specific AMP motion-group routing -- it reports planar speed and yaw rate in
 the body frame, useful for sanity-checking a clip before training.
 """

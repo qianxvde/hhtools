@@ -12,7 +12,7 @@ own training stack.
 - Added motion clipping utilities for selecting useful segments before training.
 - Added data conversion utilities for exporting training-ready MJLab/robot
   motion files from CSV, PKL, BVH, and related motion sources.
-- Added Booster-oriented robot adapters and schemas used by our training
+- Added Humanoid-oriented robot adapters and schemas used by our training
   framework.
 - Kept the web and CLI workflow for motion preview, robot retargeting, and batch
   dataset inspection.
@@ -41,7 +41,7 @@ The web app runs at `http://127.0.0.1:8009` by default.
   model files under `configs/body_models/` when needed.
 - Full third-party motion datasets are not redistributed. Use this project to
   convert or inspect locally obtained data.
-- Converted MJLab NPZ files can be consumed by the companion Booster MJLab
+- Converted MJLab NPZ files can be consumed by the companion my_mjlab
   training repository.
 
 ## License

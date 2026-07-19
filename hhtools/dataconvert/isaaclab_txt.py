@@ -1,13 +1,13 @@
-"""Export a unified trajectory into a Booster/TienKung-style AMP ``.txt`` clip.
+"""Export a unified trajectory into a Humanoid/TienKung-style AMP ``.txt`` clip.
 
-This is the dual of :mod:`hhtools.dataconvert.fullstate` (which *imports* Booster
-full-state clips). ``booster_isaaclab`` now consumes a TienKung-style AMP loader
+This is the dual of :mod:`hhtools.dataconvert.fullstate` (which *imports* Humanoid
+full-state clips). ``isaaclab_amp`` now consumes a TienKung-style AMP loader
 whose per-frame observation is::
 
     joint_pos (N) | joint_vel (N) | end_effector_pos_b (E*3)
 
 where the end-effector positions are expressed **relative to the floating base,
-rotated into the base frame** -- exactly what ``BoosterEnv.compute_amp_observations``
+rotated into the base frame** -- exactly what ``HumanoidEnv.compute_amp_observations``
 produces at runtime (``rel_pos_b = quat_apply_inverse(root_quat_w, ee_pos_w -
 root_pos_w)``). The frames are wrapped in the JSON document the loader reads::
 
@@ -21,8 +21,8 @@ root_pos_w)``). The frames are wrapped in the JSON document the loader reads::
     }
 
 The end-effector positions come from the *same* MuJoCo forward kinematics the
-NPZ exporter uses, so a single FK pass feeds both booster_mjlab (NPZ) and
-booster_isaaclab (TXT) targets. No IK / direct MJCF retargeting is involved.
+NPZ exporter uses, so a single FK pass feeds both my_mjlab (NPZ) and
+isaaclab_amp (TXT) targets. No IK / direct MJCF retargeting is involved.
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ from hhtools.dataconvert.csv_io import TrajectorySource, load_trajectory
 from hhtools.dataconvert.mjcf_model import MjcfRobot, quat_wxyz_to_mat
 
 # The AMP discriminator observation carries no root pose; these two hands + two
-# feet, in this order, are the Booster T1/K1 default (12 values = 4 * 3).
+# feet, in this order, are the T1/K1 humanoid default (12 values = 4 * 3).
 DEFAULT_END_EFFECTOR_BODIES: tuple[str, ...] = (
     "left_hand_link",
     "right_hand_link",

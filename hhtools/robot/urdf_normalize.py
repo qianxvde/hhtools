@@ -264,7 +264,7 @@ def repair_urdf_mesh_paths(
     """Rewrite ``<mesh filename>`` attributes to paths that resolve from the URDF.
 
     Typical fix: ``pelvis.STL`` → ``meshes/pelvis.STL`` when the STL lives under
-    ``meshes/`` but the URDF references a bare basename (X2, Booster, Fourier, …).
+    ``meshes/`` but the URDF references a bare basename (X2, Humanoid, Fourier, …).
     """
     tree = ET.parse(urdf_path)
     root = tree.getroot()
@@ -766,7 +766,7 @@ def _mesh_filename_prefixes(root: ET.Element) -> set[str]:
 def _infer_mujoco_meshdir(urdf_path: Path, root: ET.Element | None = None) -> str:
     """Guess ``<compiler meshdir>`` from the preset folder layout.
 
-    Booster / SolidWorks exports often reference ``meshes/Foo.STL`` while a
+    / SolidWorks exports often reference ``meshes/Foo.STL`` while a
     ``meshes/`` directory sits next to the URDF.  Setting ``meshdir="meshes"``
     in that case makes MuJoCo look for ``meshes/meshes/Foo.STL`` — use ``.``
     instead so the filename's directory prefix is honoured as-is.

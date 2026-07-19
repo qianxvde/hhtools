@@ -1,9 +1,9 @@
 """Training-export targets: one retarget, two training frameworks.
 
-The user only picks a **framework/format** — ``booster_mjlab`` (body NPZ) or
-``booster_isaaclab`` (AMP TXT). Everything robot-specific (joint order, DOF
+The user only picks a **framework/format** — ``my_mjlab`` (body NPZ) or
+``isaaclab_amp`` (AMP TXT). Everything robot-specific (joint order, DOF
 count) is **derived from the loaded robot asset at export time**, so there is no
-per-robot (T1 vs K1) choice to make: the same target works for any Booster
+per-robot (T1 vs K1) choice to make: the same target works for any Humanoid
 humanoid because
 
 * the AMP end-effector bodies (``left/right_hand_link`` + ``left/right_foot_link``)
@@ -11,7 +11,7 @@ humanoid because
 * the AMP joint order is just the robot's own actuated-joint order.
 
 ``T1_JOINT_NAMES`` / ``K1_JOINT_NAMES`` are kept only as a reference contract
-(mirrors ``booster_isaaclab/legged_lab/envs/booster/booster_cfg.py``) for tests
+(mirrors ``isaaclab_amp/legged_lab/envs/humanoid/humanoid_cfg.py``) for tests
 and validation; they are no longer required to export.
 """
 
@@ -29,7 +29,7 @@ from hhtools.dataconvert.mjcf_model import MjcfRobot
 FORMAT_NPZ = "body_npz"
 FORMAT_AMP_TXT = "amp_txt"
 
-# --- robot joint / body contracts (mirror booster_isaaclab) ----------------
+# --- robot joint / body contracts (mirror isaaclab_amp) ----------------
 
 K1_JOINT_NAMES: tuple[str, ...] = (
     "AAHead_yaw", "Head_pitch",
@@ -65,7 +65,7 @@ class TrainingExportProfile:
     """A training target. Robot-specific details are derived at export time.
 
     ``joint_order`` empty => derive from the loaded robot's actuated joints.
-    ``end_effector_bodies`` empty (NPZ) => not used; (TXT) => Booster default.
+    ``end_effector_bodies`` empty (NPZ) => not used; (TXT) => default.
     """
 
     id: str
@@ -104,22 +104,22 @@ def _register(profile: TrainingExportProfile) -> None:
 
 
 _register(TrainingExportProfile(
-    id="booster_mjlab.body_npz",
-    framework="booster_mjlab",
+    id="my_mjlab.body_npz",
+    framework="my_mjlab",
     fmt=FORMAT_NPZ,
-    label="booster_mjlab · NPZ",
+    label="my_mjlab · NPZ",
     anchor_body=_MJLAB_ANCHOR,
     output_subdir="src/assets/motions",
     file_ext=".npz",
     notes="Body-keypoint NPZ with MuJoCo-FK body_pos_w/body_quat_w (anchor=Trunk).",
 ))
 _register(TrainingExportProfile(
-    id="booster_isaaclab.amp_txt",
-    framework="booster_isaaclab",
+    id="isaaclab_amp.amp_txt",
+    framework="isaaclab_amp",
     fmt=FORMAT_AMP_TXT,
-    label="booster_isaaclab · AMP TXT",
+    label="isaaclab_amp · AMP TXT",
     end_effector_bodies=END_EFFECTOR_BODIES,
-    output_subdir="legged_lab/envs/booster/datasets",
+    output_subdir="legged_lab/envs/humanoid/datasets",
     file_ext=".txt",
     notes="TienKung-style AMP frame: joint_pos|joint_vel|ee_pos_b; joint order from the robot.",
 ))

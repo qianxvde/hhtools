@@ -1210,7 +1210,7 @@ def create_app(
 
     @app.get("/api/convert/profiles")
     def convert_profiles() -> dict:
-        """List training-export profiles (booster_mjlab NPZ / booster_isaaclab TXT)."""
+        """List training-export profiles (my_mjlab NPZ / isaaclab_amp TXT)."""
         from hhtools.dataconvert import profiles as _profiles
 
         return {"profiles": [p.as_dict() for p in _profiles.list_profiles()]}

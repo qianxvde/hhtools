@@ -1,17 +1,17 @@
-"""Import a Booster ``full_state`` motion clip into the unified trajectory.
+"""Import a ``full_state`` motion clip into the unified trajectory.
 
-Source (Booster ``full_state`` JSON) frame layout, ``6 + 2*ndof + 6`` columns::
+Source (``full_state`` JSON) frame layout, ``6 + 2*ndof + 6`` columns::
 
     [ root_pos(3) | root_euler_XYZ(3) | dof_pos(ndof) | root_lin_vel(3)
       | root_ang_vel(3) | dof_vel(ndof) ]
 
-Booster produced the Euler angles with ``R.from_quat(xyzw).as_euler("XYZ")``,
+produced the Euler angles with ``R.from_quat(xyzw).as_euler("XYZ")``,
 so we invert with ``R.from_euler("XYZ", euler).as_quat()`` to recover the xyzw
 root quaternion. The result is a :class:`TrajectorySource`, so the standard
 :func:`hhtools.dataconvert.convert.convert_trajectory` then produces the NPZ
 (with MuJoCo-FK body states) against any MJCF.
 
-This replaces booster_mjlab's ``convert_amp_motion.py`` /
+This replaces my_mjlab's ``convert_amp_motion.py`` /
 ``convert_tracking_motion.py`` import path.
 """
 
@@ -37,7 +37,7 @@ def _load_frames(path: Path) -> tuple[np.ndarray, float]:
 
 
 def load_fullstate(path: str | Path, source_joints: tuple[str, ...]) -> TrajectorySource:
-    """Parse a Booster full_state JSON clip into a :class:`TrajectorySource`.
+    """Parse a full_state JSON clip into a :class:`TrajectorySource`.
 
     ``source_joints`` is the joint order the full_state ``dof_pos`` block uses
     (e.g. the robot's full DOF order). Names must match the MJCF you later
@@ -62,6 +62,6 @@ def load_fullstate(path: str | Path, source_joints: tuple[str, ...]) -> Trajecto
         joint_pos=dof_pos,
         joint_names=tuple(source_joints),
         fps=fps,
-        meta={"source": "booster_full_state"},
+        meta={"source": "humanoid_full_state"},
         source_path=str(path),
     )

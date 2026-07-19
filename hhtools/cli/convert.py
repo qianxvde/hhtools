@@ -175,13 +175,13 @@ def speeds(
 
 @app.command("fullstate")
 def fullstate(
-    source: Path = typer.Argument(..., help="Booster full_state JSON clip (or directory)."),
+    source: Path = typer.Argument(..., help="full_state JSON clip (or directory)."),
     mjcf: Path = typer.Option(..., "--mjcf", help="Target robot MJCF/xml."),
     out: Path = typer.Option(..., "--out", "-o", help="Output NPZ file or directory."),
     joints: str = typer.Option(..., "--joints", help="Comma-separated source DOF order (full_state dof block)."),
     body_states: bool = typer.Option(True, "--body-states/--no-body-states"),
 ) -> None:
-    """Import Booster full_state TXT/JSON clips, then convert to mjlab NPZ."""
+    """Import full_state TXT/JSON clips, then convert to mjlab NPZ."""
     from hhtools.dataconvert.convert import ConvertOptions, convert_trajectory, npz_payload_summary, save_npz
     from hhtools.dataconvert.fullstate import load_fullstate
     from hhtools.dataconvert.mjcf_model import MjcfRobot
@@ -219,14 +219,14 @@ def csv_to_txt(
         "", "--joints", help="Comma-separated joint order (env motion_joint_names). Overrides --profile."
     ),
     end_effectors: str = typer.Option(
-        "", "--end-effectors", help="Comma-separated end-effector body names. Defaults to the profile / Booster default."
+        "", "--end-effectors", help="Comma-separated end-effector body names. Defaults to the profile / default."
     ),
     profile: str = typer.Option(
-        "", "--profile", help="Export profile id supplying joint order + end effectors (e.g. booster_isaaclab.t1.amp_txt)."
+        "", "--profile", help="Export profile id supplying joint order + end effectors (e.g. isaaclab_amp.t1.amp_txt)."
     ),
     fps: float | None = typer.Option(None, "--fps", help="Override the source framerate."),
 ) -> None:
-    """Convert retarget CSV/PKL trajectories into booster_isaaclab AMP .txt clips."""
+    """Convert retarget CSV/PKL trajectories into isaaclab_amp AMP .txt clips."""
     from hhtools.dataconvert.isaaclab_txt import (
         DEFAULT_END_EFFECTOR_BODIES,
         IsaacLabTxtOptions,

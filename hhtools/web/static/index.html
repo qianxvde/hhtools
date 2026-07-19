@@ -778,7 +778,7 @@
 
       <section class="panel panel-convert" data-panel="convert">
         <h2>数据转换 Data Convert</h2>
-        <p class="hint">把重定向导出的 CSV/PKL 轨迹，按当前已加载机器人转换为训练数据：<b>booster_mjlab</b> 的 body 位姿 <b>NPZ</b> 或 <b>booster_isaaclab</b> 的 AMP <b>TXT</b>（关节顺序自动取自机器人，无需区分 T1/K1）。两者都用同一套 MuJoCo 正向运动学，可在 3D 中回放并检测自碰撞 / 穿地 / 接触力。</p>
+        <p class="hint">把重定向导出的 CSV/PKL 轨迹，按当前已加载机器人转换为训练数据：<b>my_mjlab</b> 的 body 位姿 <b>NPZ</b> 或 <b>isaaclab_amp</b> 的 AMP <b>TXT</b>（关节顺序自动取自机器人，无需区分 T1/K1）。两者都用同一套 MuJoCo 正向运动学，可在 3D 中回放并检测自碰撞 / 穿地 / 接触力。</p>
 
         <div class="cv-card">
           <div class="cv-step">① 目标机器人（继承当前流程）</div>
@@ -800,24 +800,24 @@
           <label class="cv-field">
             <span>训练框架</span>
             <select id="cv-profile" class="cv-input">
-              <option value="">请选择 booster_mjlab 或 booster_isaaclab…</option>
+              <option value="">请选择 my_mjlab 或 isaaclab_amp…</option>
             </select>
           </label>
 
-          <!-- NPZ (booster_mjlab) 专属选项：选中后才显示 -->
+          <!-- NPZ (my_mjlab) 专属选项：选中后才显示 -->
           <div id="cv-npz-opts" class="cv-fmt-opts" hidden>
             <label class="cv-check"><input type="checkbox" id="cv-opt-ground" /> 贴地校正（把最低脚底压到地面）</label>
             <div class="hint">body-keypoint NPZ：锚点 <code>Trunk</code>，body 世界位姿由 MuJoCo FK 计算，关节顺序取自当前机器人。</div>
           </div>
 
-          <!-- AMP TXT (booster_isaaclab) 专属选项：选中后才显示 -->
+          <!-- AMP TXT (isaaclab_amp) 专属选项：选中后才显示 -->
           <div id="cv-txt-opts" class="cv-fmt-opts" hidden>
             <label class="cv-field">
               <span>末端 body（AMP 观测末端，4 个）</span>
               <input type="text" id="cv-txt-ee" class="cv-input"
                 placeholder="left_hand_link,right_hand_link,left_foot_link,right_foot_link" />
             </label>
-            <div class="hint">AMP 观测帧 = <code>joint_pos | joint_vel | end_effector_pos_b</code>；关节顺序自动取自当前机器人（无需区分 T1/K1）。末端留空则用 Booster 默认四点。</div>
+            <div class="hint">AMP 观测帧 = <code>joint_pos | joint_vel | end_effector_pos_b</code>；关节顺序自动取自当前机器人（无需区分 T1/K1）。末端留空则用 默认四点。</div>
           </div>
 
           <label class="cv-field">
@@ -856,7 +856,7 @@
           <div class="cv-actions">
             <button type="button" class="btn" id="cv-download" disabled>下载</button>
           </div>
-          <div class="hint" id="cv-download-hint">选择 <b>booster_mjlab · NPZ</b> 时导出字段：joint_pos/joint_vel/root_position/root_quaternion/fps/joints_list（+ body_pos_w/body_quat_w/body_names）；选择 <b>booster_isaaclab · AMP TXT</b> 时导出 TienKung 风格 JSON 帧（joint_pos | joint_vel | end_effector_pos_b），可直接放入对应训练仓库。</div>
+          <div class="hint" id="cv-download-hint">选择 <b>my_mjlab · NPZ</b> 时导出字段：joint_pos/joint_vel/root_position/root_quaternion/fps/joints_list（+ body_pos_w/body_quat_w/body_names）；选择 <b>isaaclab_amp · AMP TXT</b> 时导出 TienKung 风格 JSON 帧（joint_pos | joint_vel | end_effector_pos_b），可直接放入对应训练仓库。</div>
         </div>
       </section>
       </div>
